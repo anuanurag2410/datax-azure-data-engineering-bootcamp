@@ -1,0 +1,9 @@
+{
+	"name": "DataXADF",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "8b4dc57f-df85-4bb5-97e5-1c46ba069cc6",
+		"tenantId": "b2a330a5-56a7-4637-9771-bd8aacc8bc02"
+	}
+}
