@@ -51,7 +51,13 @@
 				"inputs": [
 					{
 						"referenceName": "VendorOrdersCSV",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"file_name": {
+								"value": "*.csv",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
