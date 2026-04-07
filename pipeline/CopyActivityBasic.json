@@ -19,7 +19,7 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"recursive": false,
+							"recursive": true,
 							"wildcardFolderPath": "orders",
 							"wildcardFileName": "*.csv",
 							"enablePartitionDiscovery": false
