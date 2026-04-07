@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"folderPath": {
-					"value": "@concat('raw/vendor/orders',formatDateTime(utcNow(),'yyyy/MM/dd'))",
+					"value": "@concat('landing/vendor/orders',formatDateTime(utcNow(),'yyyy/MM/dd'))",
 					"type": "Expression"
 				},
 				"container": "dev-datax"
