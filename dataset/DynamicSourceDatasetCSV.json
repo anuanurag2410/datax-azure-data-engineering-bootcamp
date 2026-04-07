@@ -1,5 +1,5 @@
 {
-	"name": "DynamicDatasetCSV",
+	"name": "DynamicSourceDatasetCSV",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "VendorSourceAzureBlobStorage",
