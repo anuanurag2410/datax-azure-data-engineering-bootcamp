@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "orders*.csv",
 				"folderPath": "landing",
 				"container": "dev-datax"
 			},
