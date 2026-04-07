@@ -10,14 +10,17 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "orders_20260406.csv",
+				"fileName": {
+					"value": "orders_*.csv",
+					"type": "Expression"
+				},
 				"folderPath": "orders",
 				"container": "vendor-drop"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
-			"quoteChar": "\""
+			"quoteChar": null
 		},
 		"schema": [
 			{
