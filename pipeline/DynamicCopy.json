@@ -19,7 +19,7 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"recursive": true,
+							"recursive": false,
 							"wildcardFolderPath": "orders",
 							"wildcardFileName": "*.csv",
 							"enablePartitionDiscovery": false
@@ -67,7 +67,6 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"folder_path": "raw",
-							"file_name": "*.csv",
 							"container_name": "dev-datax"
 						}
 					}
