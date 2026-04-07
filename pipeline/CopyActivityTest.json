@@ -41,6 +41,22 @@
 						}
 					},
 					"enableStaging": false,
+					"enableSkipIncompatibleRow": false,
+					"validateDataConsistency": false,
+					"logSettings": {
+						"enableCopyActivityLog": true,
+						"copyActivityLogSettings": {
+							"logLevel": "Warning",
+							"enableReliableLogging": false
+						},
+						"logLocationSettings": {
+							"linkedServiceName": {
+								"referenceName": "RawSinkAzureBlobStorage",
+								"type": "LinkedServiceReference"
+							},
+							"path": "dev-datax/landing/fail"
+						}
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"typeConversion": true,
@@ -64,6 +80,7 @@
 				]
 			}
 		],
+		"concurrency": 1,
 		"annotations": []
 	}
 }
