@@ -1,0 +1,29 @@
+{
+	"name": "VendorOrdersCSV",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "VendorSourceAzureBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "orders",
+				"container": "vendor-drop"
+			},
+			"columnDelimiter": ",",
+			"rowDelimiter": "\n",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "order_id,customer_id,product_id,order_amount,order_status,order_date,city",
+				"type": "String"
+			}
+		]
+	}
+}
