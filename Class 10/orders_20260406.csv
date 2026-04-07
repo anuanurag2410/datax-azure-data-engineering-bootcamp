@@ -1,0 +1,4 @@
+"order_id,customer_id,product_id,order_amount,order_status,order_date,city"
+"1001,C101,P201,450,PLACED,2026-04-06,Bangalore"
+"1002,C102,P205,1200,PLACED,2026-04-06,Hyderabad"
+"1003,C103,P210,799,SHIPPED,2026-04-06,Chennai"

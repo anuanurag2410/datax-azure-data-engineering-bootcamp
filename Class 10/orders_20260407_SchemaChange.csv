@@ -1,0 +1,2 @@
+"order_id,customer_id,product_id,order_amount,discount_amount,order_status,order_date,city"
+"1008,C108,P260,1000,100,PLACED,2026-04-07,Jaipur"

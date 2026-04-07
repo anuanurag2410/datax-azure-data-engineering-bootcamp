@@ -1,0 +1,3 @@
+"order_id,customer_id,product_id,order_amount,order_status,order_date,city"
+"1004,C104,P220,150,CANCELLED,2026-04-06,Pune"
+"1005,C105,P230,2200,PLACED,2026-04-06,Delhi"
