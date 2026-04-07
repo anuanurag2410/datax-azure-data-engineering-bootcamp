@@ -2,22 +2,8 @@
 	"name": "DynamicDatasetCSV",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "DynamicBlobLS",
-			"type": "LinkedServiceReference",
-			"parameters": {
-				"container_name": {
-					"value": "@dataset().container_name",
-					"type": "Expression"
-				},
-				"folder_path": {
-					"value": "@dataset().folder_path",
-					"type": "Expression"
-				},
-				"file_name": {
-					"value": "@dataset().file_name",
-					"type": "Expression"
-				}
-			}
+			"referenceName": "VendorSourceAzureBlobStorage",
+			"type": "LinkedServiceReference"
 		},
 		"parameters": {
 			"folder_path": {
