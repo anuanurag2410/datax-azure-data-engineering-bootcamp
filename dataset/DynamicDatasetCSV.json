@@ -2,8 +2,22 @@
 	"name": "DynamicDatasetCSV",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "VendorSourceAzureBlobStorage",
-			"type": "LinkedServiceReference"
+			"referenceName": "DynamicBlobLS",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"container_name": {
+					"value": "@dataset().container_name",
+					"type": "Expression"
+				},
+				"folder_path": {
+					"value": "@dataset().folder_path",
+					"type": "Expression"
+				},
+				"file_name": {
+					"value": "@dataset().file_name",
+					"type": "Expression"
+				}
+			}
 		},
 		"parameters": {
 			"folder_path": {
@@ -11,13 +25,28 @@
 			},
 			"file_name": {
 				"type": "string"
+			},
+			"container_name": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation"
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().file_name",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().folder_path",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().container_name",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
