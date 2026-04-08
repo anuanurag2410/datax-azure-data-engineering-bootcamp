@@ -1,6 +1,14 @@
 {
 	"name": "DynamicCopyPipeline",
 	"properties": {
+		"parameters": {
+			"folder_path": {
+				"type": "string"
+			},
+			"file_name": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
