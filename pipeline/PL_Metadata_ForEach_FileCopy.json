@@ -22,7 +22,10 @@
 								"value": "@pipeline().parameters.p_source_container",
 								"type": "Expression"
 							},
-							"folder_path": "''"
+							"folder_path": {
+								"value": "@pipeline().parameters.p_source_folder",
+								"type": "Expression"
+							}
 						}
 					},
 					"fieldList": [
