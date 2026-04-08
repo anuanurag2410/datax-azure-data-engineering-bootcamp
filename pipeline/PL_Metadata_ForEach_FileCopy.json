@@ -22,14 +22,14 @@
 								"value": "@pipeline().parameters.p_source_container",
 								"type": "Expression"
 							},
-							"folder_path": {
-								"value": "@pipeline().parameters.p_source_folder",
-								"type": "Expression"
-							}
+							"folder_path": "''"
 						}
 					},
 					"fieldList": [
-						"childItems"
+						{
+							"value": "childItems",
+							"type": "Expression"
+						}
 					],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
