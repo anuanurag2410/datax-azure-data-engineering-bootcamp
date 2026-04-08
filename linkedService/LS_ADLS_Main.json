@@ -3,7 +3,7 @@
 	"properties": {
 		"type": "AzureBlobFS",
 		"typeProperties": {
-			"url": "https://<account-name>.dfs.core.windows.net/"
+			"url": "https://dataxazure.dfs.core.windows.net/"
 		},
 		"annotations": []
 	}
