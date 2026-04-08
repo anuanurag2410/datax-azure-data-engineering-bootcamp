@@ -7,7 +7,6 @@
 				"type": "GetMetadata",
 				"dependsOn": [],
 				"policy": {
-					"timeout": "0.12:00:00",
 					"retry": 0,
 					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
@@ -16,32 +15,32 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "CSVDataset",
+						"referenceName": "FolderMetadataDS",
 						"type": "DatasetReference",
 						"parameters": {
 							"container": {
-								"value": "@pipeline().parameters.container",
+								"value": "@pipeline().parameters.p_source_container",
 								"type": "Expression"
 							},
 							"folder_path": {
-								"value": "@pipeline().parameters.folder_path",
-								"type": "Expression"
-							},
-							"file_name": {
-								"value": "@pipeline().parameters.file_name",
+								"value": "@pipeline().parameters.p_source_folder",
 								"type": "Expression"
 							}
 						}
 					},
 					"fieldList": [
-						"childItems"
+						{
+							"value": "childItems",
+							"type": "Expression"
+						}
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
-						"type": "DelimitedTextReadSettings"
+						"type": "BinaryReadSettings"
 					}
 				}
 			},
@@ -59,7 +58,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('MetaData').output.childItems",
+						"value": "@activity('ForLoopCopyActivity').output",
 						"type": "Expression"
 					},
 					"activities": [
@@ -68,7 +67,6 @@
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
-								"timeout": "0.12:00:00",
 								"retry": 0,
 								"retryIntervalInSeconds": 30,
 								"secureOutput": false,
@@ -90,13 +88,12 @@
 								"sink": {
 									"type": "DelimitedTextSink",
 									"storeSettings": {
-										"type": "AzureBlobStorageWriteSettings",
-										"copyBehavior": "PreserveHierarchy"
+										"type": "AzureBlobStorageWriteSettings"
 									},
 									"formatSettings": {
 										"type": "DelimitedTextWriteSettings",
 										"quoteAllText": true,
-										"fileExtension": ".txt"
+										"fileExtension": ".csv"
 									}
 								},
 								"enableStaging": false,
@@ -115,11 +112,11 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"container": {
-											"value": "@pipeline().parameters.container",
+											"value": "@pipeline().parameters.p_source_container",
 											"type": "Expression"
 										},
 										"folder_path": {
-											"value": "@pipeline().parameters.folder_path",
+											"value": "@pipeline().parameters.p_source_folder",
 											"type": "Expression"
 										},
 										"file_name": {
@@ -134,10 +131,16 @@
 									"referenceName": "CSVDataset",
 									"type": "DatasetReference",
 									"parameters": {
-										"container": "processed-data",
-										"folder_path": "/",
+										"container": {
+											"value": "@pipeline().parameters.p_target_container",
+											"type": "Expression"
+										},
+										"folder_path": {
+											"value": "@pipeline().parameters.p_target_folder",
+											"type": "Expression"
+										},
 										"file_name": {
-											"value": "@concat('raw/orders/',item().name)",
+											"value": "@item().itemName",
 											"type": "Expression"
 										}
 									}
@@ -149,14 +152,20 @@
 			}
 		],
 		"parameters": {
-			"folder_path": {
+			"p_source_container": {
+				"type": "string",
+				"defaultValue": "vendor-source"
+			},
+			"p_source_folder": {
 				"type": "string"
 			},
-			"file_name": {
-				"type": "string"
+			"p_target_container": {
+				"type": "string",
+				"defaultValue": "processed-data"
 			},
-			"container": {
-				"type": "string"
+			"p_target_folder": {
+				"type": "string",
+				"defaultValue": "raw/"
 			}
 		},
 		"annotations": []
