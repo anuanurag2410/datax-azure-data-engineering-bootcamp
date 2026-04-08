@@ -44,8 +44,8 @@
 				}
 			},
 			{
-				"name": "Filter_Only_Files",
-				"type": "Filter",
+				"name": "FE_Loop_Files",
+				"type": "ForEach",
 				"dependsOn": [
 					{
 						"activity": "GM_List_Source_Items",
@@ -60,98 +60,167 @@
 						"value": "@activity('GM_List_Source_Items').output.childItems",
 						"type": "Expression"
 					},
-					"condition": {
-						"value": "@equals(item().type,'File')",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "FE_Loop_Files",
-				"type": "ForEach",
-				"dependsOn": [
-					{
-						"activity": "Filter_Only_Files",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"items": {
-						"value": "@activity('Filter_Only_Files').output.value",
-						"type": "Expression"
-					},
-					"isSequential": true,
+					"isSequential": false,
 					"activities": [
 						{
-							"name": "CP_Copy_Current_File",
-							"type": "Copy",
+							"name": "If Condition1",
+							"type": "IfCondition",
 							"dependsOn": [],
-							"policy": {
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
 							"userProperties": [],
 							"typeProperties": {
-								"source": {
-									"type": "BinarySource",
-									"storeSettings": {
-										"type": "AzureBlobFSReadSettings",
-										"recursive": true
-									}
+								"expression": {
+									"value": "@equals(item().type, 'File')",
+									"type": "Expression"
 								},
-								"sink": {
-									"type": "BinarySink",
-									"storeSettings": {
-										"type": "AzureBlobFSWriteSettings"
+								"ifFalseActivities": [
+									{
+										"name": "Copy data2",
+										"type": "Copy",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"source": {
+												"type": "BinarySource",
+												"storeSettings": {
+													"type": "AzureBlobFSReadSettings",
+													"recursive": true
+												},
+												"formatSettings": {
+													"type": "BinaryReadSettings"
+												}
+											},
+											"sink": {
+												"type": "BinarySink",
+												"storeSettings": {
+													"type": "AzureBlobFSWriteSettings"
+												}
+											},
+											"enableStaging": false
+										},
+										"inputs": [
+											{
+												"referenceName": "DS_File_Copy",
+												"type": "DatasetReference",
+												"parameters": {
+													"container_name": {
+														"value": "@pipeline().parameters.p_source_container",
+														"type": "Expression"
+													},
+													"folder_path": {
+														"value": "@pipeline().parameters.p_source_folder",
+														"type": "Expression"
+													},
+													"file_name": {
+														"value": "@activity('GM_List_Source_Items').output.itemName",
+														"type": "Expression"
+													}
+												}
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "DS_File_Copy",
+												"type": "DatasetReference",
+												"parameters": {
+													"container_name": {
+														"value": "@pipeline().parameters.p_target_container",
+														"type": "Expression"
+													},
+													"folder_path": {
+														"value": "@pipeline().parameters.p_target_folder",
+														"type": "Expression"
+													},
+													"file_name": {
+														"value": "@activity('GM_List_Source_Items').output.itemName",
+														"type": "Expression"
+													}
+												}
+											}
+										]
 									}
-								},
-								"enableStaging": false
-							},
-							"inputs": [
-								{
-									"referenceName": "DS_File_Copy",
-									"type": "DatasetReference",
-									"parameters": {
-										"container_name": {
-											"value": "@pipeline().parameters.p_source_container",
-											"type": "Expression"
+								],
+								"ifTrueActivities": [
+									{
+										"name": "Copy data1",
+										"type": "Copy",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
 										},
-										"folder_path": {
-											"value": "@pipeline().parameters.p_source_folder",
-											"type": "Expression"
+										"userProperties": [],
+										"typeProperties": {
+											"source": {
+												"type": "BinarySource",
+												"storeSettings": {
+													"type": "AzureBlobFSReadSettings",
+													"recursive": true
+												},
+												"formatSettings": {
+													"type": "BinaryReadSettings"
+												}
+											},
+											"sink": {
+												"type": "BinarySink",
+												"storeSettings": {
+													"type": "AzureBlobFSWriteSettings"
+												}
+											},
+											"enableStaging": false
 										},
-										"file_name": {
-											"value": "@item().name",
-											"type": "Expression"
-										}
+										"inputs": [
+											{
+												"referenceName": "DS_File_Copy",
+												"type": "DatasetReference",
+												"parameters": {
+													"container_name": {
+														"value": "@pipeline().parameters.p_source_container",
+														"type": "Expression"
+													},
+													"folder_path": {
+														"value": "@pipeline().parameters.p_source_folder",
+														"type": "Expression"
+													},
+													"file_name": {
+														"value": "@activity('GM_List_Source_Items').output.itemName",
+														"type": "Expression"
+													}
+												}
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "DS_File_Copy",
+												"type": "DatasetReference",
+												"parameters": {
+													"container_name": {
+														"value": "@pipeline().parameters.p_target_container",
+														"type": "Expression"
+													},
+													"folder_path": {
+														"value": "@concat('/',activity('GM_List_Source_Items').output.itemName)",
+														"type": "Expression"
+													},
+													"file_name": {
+														"value": "@activity('GM_List_Source_Items').output.itemName",
+														"type": "Expression"
+													}
+												}
+											}
+										]
 									}
-								}
-							],
-							"outputs": [
-								{
-									"referenceName": "DS_File_Copy",
-									"type": "DatasetReference",
-									"parameters": {
-										"container_name": {
-											"value": "@pipeline().parameters.p_target_container",
-											"type": "Expression"
-										},
-										"folder_path": {
-											"value": "@pipeline().parameters.p_target_folder",
-											"type": "Expression"
-										},
-										"file_name": {
-											"value": "@item().name",
-											"type": "Expression"
-										}
-									}
-								}
-							]
+								]
+							}
 						}
 					]
 				}
@@ -171,7 +240,7 @@
 			},
 			"p_target_folder": {
 				"type": "string",
-				"defaultValue": "raw"
+				"defaultValue": "raw/"
 			}
 		},
 		"annotations": []
