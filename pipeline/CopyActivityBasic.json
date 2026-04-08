@@ -21,7 +21,7 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": "orders",
-							"wildcardFileName": "*.csv",
+							"wildcardFileName": "oder_*.csv",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
