@@ -1,9 +1,9 @@
 {
-	"name": "DynamicCopyPipeline",
+	"name": "PL_Metadata_ForEach_FileCopy",
 	"properties": {
 		"activities": [
 			{
-				"name": "MetaData",
+				"name": "GM_List_Source_Items",
 				"type": "GetMetadata",
 				"dependsOn": [],
 				"policy": {
@@ -15,10 +15,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "FolderMetadataDS",
+						"referenceName": "DS_Folder_Metadata",
 						"type": "DatasetReference",
 						"parameters": {
-							"container": {
+							"container_name": {
 								"value": "@pipeline().parameters.p_source_container",
 								"type": "Expression"
 							},
@@ -29,15 +29,11 @@
 						}
 					},
 					"fieldList": [
-						{
-							"value": "childItems",
-							"type": "Expression"
-						}
+						"childItems"
 					],
 					"storeSettings": {
-						"type": "AzureBlobStorageReadSettings",
-						"recursive": true,
-						"enablePartitionDiscovery": false
+						"type": "AzureBlobFSReadSettings",
+						"recursive": true
 					},
 					"formatSettings": {
 						"type": "BinaryReadSettings"
@@ -45,11 +41,11 @@
 				}
 			},
 			{
-				"name": "ForEach",
-				"type": "ForEach",
+				"name": "Filter_Only_Files",
+				"type": "Filter",
 				"dependsOn": [
 					{
-						"activity": "MetaData",
+						"activity": "GM_List_Source_Items",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -58,12 +54,36 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('ForLoopCopyActivity').output",
+						"value": "@activity('GM_List_Source_Items').output.childItems",
 						"type": "Expression"
 					},
+					"condition": {
+						"value": "@equals(item().type,'File')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "FE_Loop_Files",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Filter_Only_Files",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Filter_Only_Files').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
 					"activities": [
 						{
-							"name": "ForLoopCopyActivity",
+							"name": "CP_Copy_Current_File",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -75,43 +95,26 @@
 							"userProperties": [],
 							"typeProperties": {
 								"source": {
-									"type": "DelimitedTextSource",
+									"type": "BinarySource",
 									"storeSettings": {
-										"type": "AzureBlobStorageReadSettings",
-										"recursive": true,
-										"enablePartitionDiscovery": false
-									},
-									"formatSettings": {
-										"type": "DelimitedTextReadSettings"
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true
 									}
 								},
 								"sink": {
-									"type": "DelimitedTextSink",
+									"type": "BinarySink",
 									"storeSettings": {
-										"type": "AzureBlobStorageWriteSettings"
-									},
-									"formatSettings": {
-										"type": "DelimitedTextWriteSettings",
-										"quoteAllText": true,
-										"fileExtension": ".csv"
+										"type": "AzureBlobFSWriteSettings"
 									}
 								},
-								"enableStaging": false,
-								"translator": {
-									"type": "TabularTranslator",
-									"typeConversion": true,
-									"typeConversionSettings": {
-										"allowDataTruncation": true,
-										"treatBooleanAsNumber": false
-									}
-								}
+								"enableStaging": false
 							},
 							"inputs": [
 								{
-									"referenceName": "CSVDataset",
+									"referenceName": "DS_File_Copy",
 									"type": "DatasetReference",
 									"parameters": {
-										"container": {
+										"container_name": {
 											"value": "@pipeline().parameters.p_source_container",
 											"type": "Expression"
 										},
@@ -128,10 +131,10 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "CSVDataset",
+									"referenceName": "DS_File_Copy",
 									"type": "DatasetReference",
 									"parameters": {
-										"container": {
+										"container_name": {
 											"value": "@pipeline().parameters.p_target_container",
 											"type": "Expression"
 										},
@@ -140,7 +143,7 @@
 											"type": "Expression"
 										},
 										"file_name": {
-											"value": "@item().itemName",
+											"value": "@item().name",
 											"type": "Expression"
 										}
 									}
@@ -165,7 +168,7 @@
 			},
 			"p_target_folder": {
 				"type": "string",
-				"defaultValue": "raw/"
+				"defaultValue": "raw"
 			}
 		},
 		"annotations": []
