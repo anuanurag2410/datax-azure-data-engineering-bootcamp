@@ -1,0 +1,15 @@
+{
+	"name": "PL_Dynamic_Sales_File_Ingestion",
+	"properties": {
+		"parameters": {
+			"source_folder": {
+				"type": "string"
+			},
+			"sink_folder": {
+				"type": "string",
+				"defaultValue": "sales/landing/2026-04-09"
+			}
+		},
+		"annotations": []
+	}
+}
