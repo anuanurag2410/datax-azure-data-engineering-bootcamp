@@ -1,5 +1,5 @@
 {
-	"name": "DS_Target_CSV",
+	"name": "DS_Source_CSV",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LS_ADLS_Source",
@@ -26,7 +26,7 @@
 					"value": "@dataset().folder_path",
 					"type": "Expression"
 				},
-				"container": "processed-data"
+				"container": "vendor-source"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
