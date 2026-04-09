@@ -1,5 +1,17 @@
 {
 	"name": "DataXADF",
+	"properties": {
+		"globalParameters": {
+			"source_container": {
+				"type": "string",
+				"value": "vendor-source"
+			},
+			"sink_container": {
+				"type": "string",
+				"value": "processed-data"
+			}
+		}
+	},
 	"location": "eastus",
 	"identity": {
 		"type": "SystemAssigned",
