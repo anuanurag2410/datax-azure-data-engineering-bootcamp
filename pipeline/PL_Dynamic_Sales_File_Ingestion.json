@@ -23,7 +23,7 @@
 								"value": "@pipeline().parameters.source_folder",
 								"type": "Expression"
 							},
-							"file_name": "''"
+							"file_name": " "
 						}
 					},
 					"fieldList": [
