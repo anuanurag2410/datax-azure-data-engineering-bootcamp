@@ -5,6 +5,10 @@
 			"source_container": {
 				"type": "string",
 				"value": "vendor-source"
+			},
+			"sink_container": {
+				"type": "string",
+				"value": "processed-data"
 			}
 		}
 	},
