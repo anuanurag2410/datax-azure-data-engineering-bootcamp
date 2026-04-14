@@ -21,11 +21,22 @@
 					},
 					"dataset": {
 						"referenceName": "WaterMarkTable_DS",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"db_name": {
+								"value": "@pipeline().parameters.db_name",
+								"type": "Expression"
+							}
+						}
 					}
 				}
 			}
 		],
+		"parameters": {
+			"db_name": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
