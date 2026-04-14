@@ -1,18 +1,18 @@
 {
-	"name": "WaterMarkTable_DS",
+	"name": "SourceData_GCP_DS",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "MYSQL_GCP_LS",
 			"type": "LinkedServiceReference",
 			"parameters": {
-				"db_name": "adf_metadata_db"
+				"db_name": "source_sales_db"
 			}
 		},
 		"annotations": [],
 		"type": "MySqlTable",
 		"schema": [],
 		"typeProperties": {
-			"tableName": "pipeline_watermark"
+			"tableName": "`sales_orders`"
 		}
 	}
 }
