@@ -1,6 +1,31 @@
 {
 	"name": "pl_incremental_sales_orders",
 	"properties": {
+		"activities": [
+			{
+				"name": "Lookup_Watermark",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "MySqlSource",
+						"query": "SELECT last_watermark_value\nFROM pipeline_watermark\nWHERE pipeline_name = 'pl_incremental_sales_orders'"
+					},
+					"dataset": {
+						"referenceName": "WaterMarkTable_DS",
+						"type": "DatasetReference"
+					}
+				}
+			}
+		],
 		"annotations": []
 	}
 }

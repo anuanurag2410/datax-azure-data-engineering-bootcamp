@@ -1,0 +1,15 @@
+{
+	"name": "WaterMarkTable_DS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "MYSQL_GCP_LS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "MySqlTable",
+		"schema": [],
+		"typeProperties": {
+			"tableName": "pipeline_watermark"
+		}
+	}
+}
