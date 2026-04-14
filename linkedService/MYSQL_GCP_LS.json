@@ -1,0 +1,29 @@
+{
+	"name": "MYSQL_GCP_LS",
+	"properties": {
+		"parameters": {
+			"db_name": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "MySql",
+		"typeProperties": {
+			"server": "34.75.222.187",
+			"port": 3306,
+			"database": "@{linkedService().db_name}",
+			"username": "ADFUser",
+			"sslMode": 1,
+			"useSystemTrustStore": 0,
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AzureKeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "MYSQLPassword"
+			},
+			"driverVersion": "v2"
+		}
+	}
+}
