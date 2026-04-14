@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup_Watermark",
+				"name": "Lookup_OldWatermark",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "MySqlSource",
-						"query": "SELECT last_watermark_value\nFROM pipeline_watermark\nWHERE pipeline_name = 'pl_incremental_sales_orders'"
+						"query": "SELECT last_watermark_value\nFROM pipeline_watermark\nWHERE pipeline_name = 'pl_incremental_sales_orders'\n  AND source_table_name = 'sales_orders'"
 					},
 					"dataset": {
 						"referenceName": "WaterMarkTable_DS",
@@ -30,7 +30,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Lookup_Watermark",
+						"activity": "Lookup_OldWatermark",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -48,7 +48,7 @@
 					"source": {
 						"type": "MySqlSource",
 						"query": {
-							"value": "@concat(\n'SELECT * FROM sales_orders WHERE updated_at > ''',\nactivity('Lookup_Watermark').output.firstRow.last_watermark_value,\n''''\n)",
+							"value": "@concat(\n'SELECT * FROM sales_orders WHERE updated_at > ''',\nactivity('Lookup_OldWatermark').output.firstRow.last_watermark_value,\n''''\n)",
 							"type": "Expression"
 						}
 					},
@@ -88,7 +88,7 @@
 				]
 			},
 			{
-				"name": "Lookup2",
+				"name": "Lookup_NewWatermark",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -110,12 +110,12 @@
 					"source": {
 						"type": "MySqlSource",
 						"query": {
-							"value": "@concat(\n'UPDATE pipeline_watermark SET last_watermark_value = ''',\nactivity('Lookup_Watermark').output.firstRow.new_watermark,\n''', last_run_status = ''SUCCESS'' WHERE pipeline_name = ''pl_incremental_sales_orders'''\n)\n\n",
+							"value": "@concat(\n'SELECT MAX(updated_at) AS new_watermark FROM sales_orders WHERE updated_at > ''',\nactivity('Lookup_OldWatermark').output.firstRow.last_watermark_value,\n''''\n)",
 							"type": "Expression"
 						}
 					},
 					"dataset": {
-						"referenceName": "WaterMarkTable_DS",
+						"referenceName": "SourceData_GCP_DS",
 						"type": "DatasetReference"
 					}
 				}
