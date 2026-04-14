@@ -47,7 +47,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "MySqlSource",
-						"query": "SELECT *\nFROM sales_orders\nWHERE updated_at > watermark"
+						"query": {
+							"value": "@concat(\n'SELECT * FROM sales_orders WHERE updated_at > ''',\nactivity('Lookup_Watermark').output.firstRow.last_watermark_value,\n''''\n)",
+							"type": "Expression"
+						}
 					},
 					"sink": {
 						"type": "DelimitedTextSink",
