@@ -48,7 +48,7 @@
 					"source": {
 						"type": "MySqlSource",
 						"query": {
-							"value": "@concat(\n'SELECT * FROM sales_orders WHERE updated_at > ''',\nactivity('LookupOldWatermark').output.firstRow.last_watermark_value,\n''''\n)",
+							"value": "@concat(\n'SELECT * FROM Sales_orders WHERE updated_at > ''',\nactivity('LookupOldWatermark').output.firstRow.last_watermark_value,\n''''\n)",
 							"type": "Expression"
 						}
 					},
