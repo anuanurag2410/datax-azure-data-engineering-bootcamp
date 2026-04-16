@@ -55,12 +55,13 @@
 					"sink": {
 						"type": "DelimitedTextSink",
 						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
+							"type": "AzureBlobStorageWriteSettings",
+							"copyBehavior": "PreserveHierarchy"
 						},
 						"formatSettings": {
 							"type": "DelimitedTextWriteSettings",
 							"quoteAllText": true,
-							"fileExtension": ".txt"
+							"fileExtension": ".csv"
 						}
 					},
 					"enableStaging": false,
@@ -85,6 +86,72 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "LookupNewWatermark",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "CopyDeltaData",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "MySqlSource",
+						"query": {
+							"value": "@concat(\n'SELECT MAX(updated_at) AS new_watermark FROM sales_orders WHERE updated_at > ''',\nactivity('LookupOldWatermark').output.firstRow.last_watermark_value,\n'''')",
+							"type": "Expression"
+						}
+					},
+					"dataset": {
+						"referenceName": "MySqlTable_Source",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "LookupUpdate",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "LookupNewWatermark",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "MySqlSource",
+						"query": {
+							"value": "@concat(\n'UPDATE pipeline_watermark SET last_watermark_value = ''',\nactivity('LookupNewWatermark').output.firstRow.new_watermark,\n''', last_run_status = ''SUCCESS'', updated_at = NOW() WHERE pipeline_name = ''pl_incremental_sales_orders'' AND source_table_name = ''sales_orders'''\n)\n",
+							"type": "Expression"
+						}
+					},
+					"dataset": {
+						"referenceName": "MySql_ControlTable",
+						"type": "DatasetReference"
+					}
+				}
 			}
 		],
 		"annotations": []
