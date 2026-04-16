@@ -21,7 +21,7 @@
 					"referenceName": "AzureKeyVault",
 					"type": "LinkedServiceReference"
 				},
-				"secretName": "MYSQLGCPPassword"
+				"secretName": "MYSQLPassword"
 			},
 			"driverVersion": "v2"
 		}
