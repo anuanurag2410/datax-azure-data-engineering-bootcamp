@@ -110,7 +110,7 @@
 					"source": {
 						"type": "MySqlSource",
 						"query": {
-							"value": "@concat(\n'SELECT MAX(updated_at) AS new_watermark FROM sales_orders WHERE updated_at > ''',\nactivity('LookupOldWatermark').output.firstRow.last_watermark_value,\n'''')",
+							"value": "@concat(\n'SELECT MAX(updated_at) AS new_watermark FROM Sales_orders WHERE updated_at > ''',\nactivity('LookupOldWatermark').output.firstRow.last_watermark_value,\n'''')",
 							"type": "Expression"
 						}
 					},
