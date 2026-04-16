@@ -1,0 +1,23 @@
+{
+	"name": "TargetDS_ProjectIncremental",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorageTARGETIncremental_LS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "incremental",
+				"container": "bronze-project-ingestion"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
