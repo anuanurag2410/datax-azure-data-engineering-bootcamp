@@ -26,7 +26,7 @@
 				}
 			},
 			{
-				"name": "Copy data1",
+				"name": "Copy_Delta_Orders",
 				"type": "Copy",
 				"dependsOn": [
 					{
@@ -92,7 +92,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "Copy data1",
+						"activity": "Copy_Delta_Orders",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -118,6 +118,30 @@
 						"referenceName": "SourceData_GCP_DS",
 						"type": "DatasetReference"
 					}
+				}
+			},
+			{
+				"name": "Script_UpdateWatermark",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Lookup_NewWatermark",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"scripts": [],
+					"scriptBlockExecutionTimeout": "02:00:00"
 				}
 			}
 		],
